@@ -1,0 +1,216 @@
+{
+  "preamble": {
+    "title": "socious-io/aiken",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.9+2217206"
+    },
+    "license": "N/A"
+  },
+  "validators": [
+    {
+      "title": "escrow.escrow.spend",
+      "datum": {
+        "title": "_datum",
+        "schema": {
+          "$ref": "#/definitions/escrow~1types~1Datum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/escrow~1types~1Redeemer"
+        }
+      },
+      "compiledCode": "589f01010032323232323225333002323232323253330073370e900118041baa00113233223232533300c3370e90000008a99980798071baa007002161533300c3370e90010008a99980798071baa0070021616300c375400c2a66601466e1d2000300b375400a294452818060009806180680098049baa00116300a300b0033009002300800230080013004375400229309b2b2b9a5573aaae7955cfaba157441",
+      "hash": "261019f464040fb549178b67eb866704ee40ba88f68b6aa9c1b4d4bf"
+    },
+    {
+      "title": "escrow.escrow.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "589f01010032323232323225333002323232323253330073370e900118041baa00113233223232533300c3370e90000008a99980798071baa007002161533300c3370e90010008a99980798071baa0070021616300c375400c2a66601466e1d2000300b375400a294452818060009806180680098049baa00116300a300b0033009002300800230080013004375400229309b2b2b9a5573aaae7955cfaba157441",
+      "hash": "261019f464040fb549178b67eb866704ee40ba88f68b6aa9c1b4d4bf"
+    }
+  ],
+  "definitions": {
+    "Int": {
+      "dataType": "integer"
+    },
+    "Option$StakeCredential": {
+      "title": "Option",
+      "anyOf": [
+        {
+          "title": "Some",
+          "description": "An optional value.",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/StakeCredential"
+            }
+          ]
+        },
+        {
+          "title": "None",
+          "description": "Nothing.",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "PaymentCredential": {
+      "title": "PaymentCredential",
+      "description": "A general structure for representing an on-chain `Credential`.\n\n Credentials are always one of two kinds: a direct public/private key\n pair, or a script (native or Plutus).",
+      "anyOf": [
+        {
+          "title": "VerificationKey",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/VerificationKeyHash"
+            }
+          ]
+        },
+        {
+          "title": "Script",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "$ref": "#/definitions/ScriptHash"
+            }
+          ]
+        }
+      ]
+    },
+    "ScriptHash": {
+      "title": "ScriptHash",
+      "dataType": "bytes"
+    },
+    "StakeCredential": {
+      "title": "StakeCredential",
+      "description": "Represent a type of object that can be represented either inline (by hash)\n or via a reference (i.e. a pointer to an on-chain location).\n\n This is mainly use for capturing pointers to a stake credential\n registration certificate in the case of so-called pointer addresses.",
+      "anyOf": [
+        {
+          "title": "Inline",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/cardano~1address~1Credential"
+            }
+          ]
+        },
+        {
+          "title": "Pointer",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "title": "slot_number",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "transaction_index",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "certificate_index",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "cardano/address/Address": {
+      "title": "Address",
+      "description": "A Cardano `Address` typically holding one or two credential references.\n\n Note that legacy bootstrap addresses (a.k.a. 'Byron addresses') are\n completely excluded from Plutus contexts. Thus, from an on-chain\n perspective only exists addresses of type 00, 01, ..., 07 as detailed\n in [CIP-0019 :: Shelley Addresses](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0019/#shelley-addresses).",
+      "anyOf": [
+        {
+          "title": "Address",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "payment_credential",
+              "$ref": "#/definitions/PaymentCredential"
+            },
+            {
+              "title": "stake_credential",
+              "$ref": "#/definitions/Option$StakeCredential"
+            }
+          ]
+        }
+      ]
+    },
+    "cardano/address/Credential": {
+      "title": "Credential",
+      "description": "A general structure for representing an on-chain `Credential`.\n\n Credentials are always one of two kinds: a direct public/private key\n pair, or a script (native or Plutus).",
+      "anyOf": [
+        {
+          "title": "VerificationKey",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/VerificationKeyHash"
+            }
+          ]
+        },
+        {
+          "title": "Script",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "$ref": "#/definitions/ScriptHash"
+            }
+          ]
+        }
+      ]
+    },
+    "escrow/types/Datum": {
+      "title": "Datum",
+      "anyOf": [
+        {
+          "title": "Datum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "initiator",
+              "$ref": "#/definitions/cardano~1address~1Address"
+            }
+          ]
+        }
+      ]
+    },
+    "escrow/types/Redeemer": {
+      "title": "Redeemer",
+      "anyOf": [
+        {
+          "title": "Release",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Refund",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    }
+  }
+}
