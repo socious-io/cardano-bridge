@@ -1,5 +1,6 @@
 {
-  "name": "hello-aiken",
+  "name": "cardano-bridge",
+  "private": true,
   "version": "1.0.0",
   "description": "Write validators in the `validators` folder, and supporting functions in the `lib` folder using `.ak` as a file extension.",
   "main": "index.js",
@@ -7,7 +8,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "prettier": "npx prettier -w ."
+    "prettier": "npx prettier -w .",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
     "@types/cbor": "^5.0.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
-    "prettier": "^3.5.1"
+    "prettier": "^3.5.1",
+    "typescript": "^5.7.3"
   }
 }
