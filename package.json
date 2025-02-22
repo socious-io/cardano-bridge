@@ -9,6 +9,13 @@
   "directories": {
     "lib": "lib"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+
   "scripts": {
     "prettier": "npx prettier -w .",
     "build": "tsc"
