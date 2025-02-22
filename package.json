@@ -3,8 +3,7 @@
   "type": "module",
   "private": true,
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.ts",
   "description": "Write validators in the `validators` folder, and supporting functions in the `lib` folder using `.ak` as a file extension.",
   "directories": {
     "lib": "lib"
