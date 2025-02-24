@@ -10,6 +10,7 @@ export class Escrow extends Offchain {
     const utxos = await this.wallet.getUtxos();
     const walletAddress = await this.getWalletDappAddress();
     if (!walletAddress) throw Error('wallet address can not be found');
+    console.log(walletAddress, '*********************@@@@');
     const walletInfo = this.getWalletInfo(walletAddress);
 
     const txBuilder = this.getTxBuilder();

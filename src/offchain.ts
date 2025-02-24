@@ -73,8 +73,8 @@ export class Offchain {
     });
   }
 
-  connectWallet(walletProvider: any) {
-    this.wallet = walletProvider as IWallet;
+  async connectWallet(name: string) {
+    this.wallet = await BrowserWallet.enable(name);
   }
 
   getWalletDappAddress = async () => {
