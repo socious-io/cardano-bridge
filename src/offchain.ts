@@ -77,7 +77,7 @@ export class Offchain {
     this.wallet = walletProvider as IWallet;
   }
 
-  protected getWalletDappAddress = async () => {
+  getWalletDappAddress = async () => {
     if (!this.wallet) throw Error('wallet not connected');
 
     const usedAddresses = await this.wallet.getUsedAddresses();
