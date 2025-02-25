@@ -1,23 +1,30 @@
 use aiken/collection/list
 use cardano/transaction.{Transaction, OutputReference, find_input}
+use aiken/crypto.{VerificationKeyHash}
 use cardano/assets.{from_asset}
 
 use cocktail/vodka_value.{get_all_value_to, value_geq}
 use cocktail/vodka_inputs.{inputs_at}
 
-use escrow/types.{Datum, Redeemer, Release, Refund, Params}
+use escrow/types.{Datum, Redeemer, Release, Refund}
  
  
 validator escrow {
   spend(
-    _datum: Option<Datum>,
+    datum: Option<Datum>,
     redeemer: Redeemer,
     ref: OutputReference,
     tx: Transaction
   ) {
+    
+    expect Some(Datum { admin, owner, payouts }) = datum
+
     when redeemer is {
       Release -> {
         trace @"redeemer": "Release"
+
+        let must_be_signed = list.has(tx.extra_signatories, owner) || list.has(tx.extra_signatories, admin)
+
         // expect Some(own_input) = find_input(tx.inputs, ref)
         // let own_address = own_input.output.address
         
@@ -34,11 +41,12 @@ validator escrow {
         // })
 
         // is_payouts_correct
-        True
+        must_be_signed
       }
       Refund -> {
         trace @"redeemer": "Refund"
-        False
+        let must_be_signed = list.has(tx.extra_signatories, admin)
+        must_be_signed
       }
     }
   }

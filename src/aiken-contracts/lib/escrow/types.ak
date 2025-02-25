@@ -1,19 +1,10 @@
+use aiken/crypto.{VerificationKeyHash}
 use cardano/address.{Address}
 use cardano/assets.{AssetName, PolicyId}
-
-pub type Datum {
-  initiator: Address,
-}
 
 pub type Redeemer {
   Release
   Refund
-}
-
-pub type Asset {
-  policy_id: PolicyId,
-  name: AssetName,
-  amount: Int,
 }
 
 pub type Payout {
@@ -21,8 +12,9 @@ pub type Payout {
   amount: Int,
 }
 
-pub type Params {
-  admin: Address,
-  asset: Asset,
+
+pub type Datum {
+  admin: VerificationKeyHash,
+  owner: VerificationKeyHash,
   payouts: List<Payout>,
 }

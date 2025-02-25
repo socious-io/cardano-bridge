@@ -1,22 +1,40 @@
-import { Asset, conStr0, mConStr0 } from '@meshsdk/core';
+import { Asset, conStr0, mConStr0, Data, deserializeAddress, list, integer, pubKeyAddress } from '@meshsdk/core';
 
 import { Offchain } from '../offchain';
-import { ReleaseParams } from './escrow.types';
+import { ReleaseParams, DepositParams } from './escrow.types';
 
 export class Escrow extends Offchain {
-  async deposit(asset: Asset): Promise<string> {
+
+  makeDatum(params: DepositParams, ownerPubKeyHash: string) {
+    const { pubKeyHash } = deserializeAddress(params.admin);
+    return conStr0([
+      { bytes: pubKeyHash },
+      { bytes: ownerPubKeyHash },
+      list(params.payouts.map(p => {        
+        const { pubKeyHash, stakeCredentialHash } = deserializeAddress(p.address);        
+        return conStr0([pubKeyAddress(pubKeyHash, stakeCredentialHash), integer(p.amount)])
+      }))
+    ])
+  }
+
+  async deposit(params: DepositParams): Promise<string> {
     if (!this.wallet) throw Error('wallet is not connected');
 
     const utxos = await this.wallet.getUtxos();
     const walletAddress = await this.getWalletDappAddress();
     if (!walletAddress) throw Error('wallet address can not be found');
-    console.log(walletAddress, '*********************@@@@');
+
     const walletInfo = this.getWalletInfo(walletAddress);
+
+    console.log(JSON.stringify(mConStr0([walletInfo.pubKeyHash])),'******************')
+    const datum = this.makeDatum(params, walletInfo.pubKeyHash);
+
+    console.log(JSON.stringify(datum), '--------------------------------@@')
 
     const txBuilder = this.getTxBuilder();
     await txBuilder
-      .txOut(this.script.address, [asset])
-      .txOutDatumHashValue(conStr0([walletInfo.pubKeyAddress]), 'JSON')
+      .txOut(this.script.address, [params.asset])
+      .txOutInlineDatumValue(datum, 'JSON')
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .complete();
@@ -46,7 +64,7 @@ export class Escrow extends Offchain {
       .txIn(scriptUtxo.input.txHash, scriptUtxo.input.outputIndex, scriptUtxo.output.amount, scriptUtxo.output.address)
       .txInScript(this.script.cbor)
       .txInRedeemerValue(mConStr0([]))
-      .txInDatumValue(conStr0([walletInfo.pubKeyAddress]), 'JSON')
+      .spendingReferenceTxInInlineDatumPresent()
       .requiredSignerHash(walletInfo.pubKeyHash)
       .changeAddress(params.payouts[1].address)
       .txInCollateral(

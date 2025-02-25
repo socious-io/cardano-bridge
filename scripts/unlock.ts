@@ -11,7 +11,7 @@ const admin =
 
 const escrow = new Escrow({ blockfrost: process.env.BLOCKFROST_PROJECT_ID as string });
 
-escrow.connectWalletBySecret(fs.readFileSync('test.sk').toString());
+escrow.connectWalletBySecret(fs.readFileSync('owner.sk').toString());
 
 const payouts = [
   { address: dest, amount: 1000000 },
