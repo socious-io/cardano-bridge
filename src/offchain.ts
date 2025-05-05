@@ -80,16 +80,7 @@ export class Offchain {
   getWalletDappAddress = async () => {
     if (!this.wallet) throw Error('wallet not connected');
 
-    const usedAddresses = await this.wallet.getUsedAddresses();
-    if (usedAddresses.length > 0) {
-      return usedAddresses[0];
-    }
-    const unusedAddresses = await this.wallet.getUnusedAddresses();
-    if (unusedAddresses.length > 0) {
-      return unusedAddresses[0];
-    }
-
-    return '';
+    return this.wallet.getChangeAddress();
   };
 
   async getUtxoByTxHash(txHash: string): Promise<UTxO> {
