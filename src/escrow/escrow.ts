@@ -51,14 +51,14 @@ export class Escrow extends Offchain {
     console.log("Datum:", conStr0([walletInfo.pubKeyAddress])); 
 
     const txBuilder = this.getTxBuilder();
-    await txBuilder
+    txBuilder
       .spendingPlutusScript(this.languageVersion)
       .txIn(scriptUtxo.input.txHash, scriptUtxo.input.outputIndex, scriptUtxo.output.amount, scriptUtxo.output.address)
       .txInScript(this.script.cbor)
       .txInRedeemerValue(mConStr0([]))
       .txInDatumValue(conStr0([walletInfo.pubKeyAddress]), 'JSON')
       .requiredSignerHash(walletInfo.pubKeyHash)
-      .changeAddress(params.payouts[1].address)
+      .changeAddress(walletAddress)
       .txInCollateral(
         collateral[0].input.txHash,
         collateral[0].input.outputIndex,
