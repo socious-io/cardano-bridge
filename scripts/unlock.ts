@@ -5,17 +5,17 @@ import { Escrow } from '../src/escrow/escrow';
 config();
 
 const dest =
-  'addr_test1qq3yn36mqf7phf7j2k7n2eyyy2qyn4k95ncemupqj50d36tqqx9cwx6al5gamz6vs0wmk492r6krlyyvdvgec3n3a42qfgcsq8';
+  'addr_test1qrgc7hlxscruz50ntl7g94p8rfamlulncag333ju823n37nn5j2m090tssjuj9qkd7q5xgnlud6msndp3zdzjnqx366qtznk9m';
 const admin =
-  'addr_test1qzg0muwwwmcclf9gwvwnjwjx22zzksllznpsd9zhng4saknzxwx2jtelp3ux5tvwykkxt6mxh6wvyuxvj3uuwuwlgnwswhd9ah';
+  'addr_test1qqhxq3ps5rjnkj72v5trr8t78ljxhccetx0et6wt0r0vehgl85luz4yhrk7j449qff3zy9d5m7dw87f3sqvx3009vwwqt8lzve';
 
 const escrow = new Escrow({ blockfrost: process.env.BLOCKFROST_PROJECT_ID as string });
 
 escrow.connectWalletBySecret(fs.readFileSync('test.sk').toString());
 
 const payouts = [
-  { address: dest, amount: 1000000 },
-  { address: admin, amount: 1000000 },
+  { address: dest, amount: 2000000 },
+  // { address: admin, amount: 1000000 },
 ];
 
 escrow
