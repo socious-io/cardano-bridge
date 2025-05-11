@@ -47,8 +47,10 @@ export class Escrow extends Offchain {
     const asset = scriptUtxo.output.amount[0];
 
     console.log("Script UTxO:", scriptUtxo);
+    console.log("Wallet UTxO:", utxos);
     console.log("Redeemer:", mConStr0([])); // Is this the expected redeemer?
     console.log("Datum:", conStr0([walletInfo.pubKeyAddress])); 
+    console.log("Collateral:", collateral);
 
     const txBuilder = this.getTxBuilder();
     txBuilder
