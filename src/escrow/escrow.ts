@@ -59,7 +59,7 @@ export class Escrow extends Offchain {
       .txInScript(this.script.cbor)
       .txInRedeemerValue(mConStr0([]))
       .txInDatumValue(conStr0([walletInfo.pubKeyAddress]), 'JSON')
-      .requiredSignerHash(walletInfo.pubKeyHash)
+      // .requiredSignerHash(walletInfo.pubKeyHash)
       .changeAddress(walletAddress)
       .txInCollateral(
         collateral[0].input.txHash,
