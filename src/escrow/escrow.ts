@@ -52,6 +52,7 @@ export class Escrow extends Offchain {
     console.log("Datum:", conStr0([walletInfo.pubKeyAddress])); 
     console.log("Collateral:", collateral);
 
+
     const txBuilder = this.getTxBuilder();
     txBuilder
       .spendingPlutusScript(this.languageVersion)
@@ -59,7 +60,7 @@ export class Escrow extends Offchain {
       .txInScript(this.script.cbor)
       .txInRedeemerValue(mConStr0([]))
       .txInDatumValue(conStr0([walletInfo.pubKeyAddress]), 'JSON')
-      // .requiredSignerHash(walletInfo.pubKeyHash)
+      .requiredSignerHash(walletInfo.pubKeyHash)
       .changeAddress(walletAddress)
       .txInCollateral(
         collateral[0].input.txHash,
@@ -77,7 +78,7 @@ export class Escrow extends Offchain {
 
     const unsignedTx = txBuilder.txHex;
 
-    const signedTx = await this.wallet.signTx(unsignedTx);
+    const signedTx = await this.wallet.signTx(unsignedTx, true);
     const txHash = await this.wallet.submitTx(signedTx);
 
     return txHash;
